@@ -47,3 +47,5 @@ export const Experiences: ExperienceInterface[] = [
     },
   },
 ];
+
+export const featuredExperiences = Experiences.slice(0, 3);

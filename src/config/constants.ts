@@ -21,3 +21,10 @@ export type ValidSkills =
 export type ValidCategory = "Frontend Developer";
 
 export type ValidExpType = "Personal Project" | "Professional";
+
+export type ValidPages =
+  | "about"
+  | "skills"
+  | "experience"
+  | "contact"
+  | "resume";
