@@ -9,17 +9,17 @@ import { pagesConfig } from "@/config/pages";
 import { featuredSkills } from "@/config/skills";
 import { featuredExperiences } from "@/config/experience";
 import { cn } from "@/lib/utils";
+import ProfileImage from "@/public/certificate.png";
 const AboutOrganism = () => {
   return (
     <>
       <section className="h-screen flex items-center pt-6 pb-8 mb-0 md:pb-12 md:py-20 lg:py-32 space-y-6">
         <div className="container flex max-w-[64rem] flex-col items-center gap-4 text-center -mt-20">
           <Image
-            src=""
-            alt=""
+            src={ProfileImage}
+            alt="Profile Image"
             height={100}
             width={100}
-            sizes="100vw"
             className="bg-primary rounded-full mb-0 h-auto md:mb-2 w-[60%] max-w-[16rem] border-8 border-primary dark:border-white dark:bg-white"
           />
           <h1 className="font-heading text-base sm:text-xl md:text-xl lg:text-2xl">
