@@ -18,7 +18,7 @@ export type ValidSkills =
   | "AWS S3"
   | "AWS CloudFront";
 
-export type ValidCategory = "Frontend Developer";
+export type ValidCategory = "Frontend Developer" | "Frontend Intern";
 
 export type ValidExpType = "Personal Project" | "Professional";
 

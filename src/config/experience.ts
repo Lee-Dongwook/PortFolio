@@ -46,6 +46,23 @@ export const Experiences: ExperienceInterface[] = [
       bullets: [],
     },
   },
+  {
+    id: "EXEM",
+    companyName: "EXEM",
+    type: "Professional",
+    category: ["Frontend Intern"],
+    shortDescription: "",
+    websiteLink: "",
+    techStack: ["JavaScript", "TypeScript", "Playwright", "StoryBook"],
+    startDate: new Date("2023-07-10"),
+    endDate: new Date("2023-12-15"),
+    companyLogoImg: "",
+    pagesInfoArray: [],
+    descriptionDetails: {
+      paragraphs: [],
+      bullets: [],
+    },
+  },
 ];
 
 export const featuredExperiences = Experiences.slice(0, 3);
