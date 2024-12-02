@@ -4,11 +4,10 @@ import Link from "next/link";
 import { Icons } from "@/components/atoms/icons";
 import ProjectCard from "@/components/molecules/project-card";
 import SkillsCard from "@/components/molecules/skills-card";
-import { Button, buttonVariants } from "@/components/ui/button";
+import { Button } from "@/components/ui/button";
 import { pagesConfig } from "@/config/pages";
 import { featuredSkills } from "@/config/skills";
 import { featuredExperiences } from "@/config/experience";
-import { cn } from "@/lib/utils";
 import ProfileImage from "@/public/certificate.png";
 const AboutOrganism = () => {
   return (
