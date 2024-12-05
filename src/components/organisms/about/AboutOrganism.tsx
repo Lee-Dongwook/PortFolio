@@ -4,11 +4,12 @@ import Link from "next/link";
 import { Icons } from "@/components/atoms/icons";
 import ProjectCard from "@/components/molecules/project-card";
 import SkillsCard from "@/components/molecules/skills-card";
-import { Button } from "@/components/ui/button";
+import { Button, buttonVariants } from "@/components/ui/button";
 import { pagesConfig } from "@/config/pages";
 import { featuredSkills } from "@/config/skills";
 import { featuredExperiences } from "@/config/experience";
 import ProfileImage from "@/public/certificate.png";
+import { cn } from "@/lib/utils";
 const AboutOrganism = () => {
   return (
     <>
@@ -32,9 +33,24 @@ const AboutOrganism = () => {
               href={"https://github.com/Lee-DongWook"}
               target="_blank"
               rel="noopener noreferrer"
-            ></Link>
-            <Link href={"/contact"} rel="noreferrer"></Link>
+              className={cn(buttonVariants({ size: "lg" }))}
+            >
+              <Icons.gitHub className="w-4 h-4 mr-2" /> GitHub
+            </Link>
+            <Link
+              href={"/contact"}
+              rel="noreferrer"
+              className={cn(
+                buttonVariants({
+                  variant: "outline",
+                  size: "lg",
+                })
+              )}
+            >
+              <Icons.contact className="w-4 h-4 mr-2" /> Contact
+            </Link>
           </div>
+          <Icons.chevronDown className="h-6 w-6 mt-10" />
         </div>
       </section>
       <section
