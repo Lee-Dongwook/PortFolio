@@ -1,6 +1,14 @@
 import React from "react";
-import { MainHero } from "@/widgets/main-hero";
+import { AboutProfile } from "@/widgets/about-profile";
+import { FeaturedSkills } from "@/widgets/featured-skills";
+import { FeaturedExperience } from "@/widgets/featured-experience";
 
 export default function Home() {
-  return <MainHero />;
+  return (
+    <>
+      <AboutProfile />
+      <FeaturedSkills />
+      <FeaturedExperience />
+    </>
+  );
 }
