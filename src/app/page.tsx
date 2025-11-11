@@ -1,6 +1,6 @@
 import React from "react";
-import MainTemplate from "@/components/template/main/MainTemplate";
+import AboutTemplate from "@/components/template/about/AboutTemplate";
 
 export default function Home() {
-  return <MainTemplate />;
+  return <AboutTemplate />;
 }
