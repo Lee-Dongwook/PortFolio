@@ -1,6 +1,6 @@
 import React from "react";
-import ExperienceTemplate from "@/components/template/experience/ExperienceTemplate";
+import { ExperienceSection } from "@/widgets/experience-section";
 
-export default function ExperiencePage() {
-  return <ExperienceTemplate />;
+export default function Experience() {
+  return <ExperienceSection />;
 }

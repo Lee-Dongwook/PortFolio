@@ -1,6 +1,6 @@
 import React from "react";
-import SkillsTemplate from "@/components/template/skills/SkillsTemplate";
+import { SkillsSection } from "@/widgets/skills-section";
 
-export default function SkillsPage() {
-  return <SkillsTemplate />;
+export default function Skills() {
+  return <SkillsSection />;
 }

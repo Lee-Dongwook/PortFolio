@@ -1,10 +1,10 @@
 import type { Metadata } from "next";
 import { Inter as FontSans } from "next/font/google";
 import "./globals.css";
-import { ThemeProvider } from "@/providers/theme-provider";
-import { Toaster } from "@/components/ui/toaster";
-import { ModalProvider } from "@/providers/modal-provider";
-import { cn } from "@/lib/utils";
+import { ThemeProvider } from "@/shared/providers/theme-provider";
+import { Toaster } from "@/shared/ui/toaster";
+import { ModalProvider } from "@/shared/providers/modal-provider";
+import { cn } from "@/shared/lib/utils";
 
 const fontSans = FontSans({
   subsets: ["latin"],

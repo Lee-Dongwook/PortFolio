@@ -1,7 +1,7 @@
-import { MainNav } from "@/components/molecules/main-nav";
-import { ModeToggle } from "@/components/molecules/mode-toggle";
-import { SiteFooter } from "@/components/molecules/site-footer";
-import { routesConfig } from "@/config/routes";
+import { MainNav } from "@/widgets/navigation";
+import { ModeToggle } from "@/shared/ui/mode-toggle";
+import { SiteFooter } from "@/widgets/footer";
+import { routesConfig } from "@/shared/config/routes";
 
 interface MarketingLayoutProps {
   children: React.ReactNode;

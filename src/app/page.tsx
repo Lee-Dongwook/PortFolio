@@ -1,6 +1,6 @@
 import React from "react";
-import AboutTemplate from "@/components/template/about/AboutTemplate";
+import { MainHero } from "@/widgets/main-hero";
 
 export default function Home() {
-  return <AboutTemplate />;
+  return <MainHero />;
 }

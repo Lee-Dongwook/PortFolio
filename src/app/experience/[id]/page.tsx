@@ -1,20 +1,20 @@
 import React from "react";
 import { redirect } from "next/navigation";
-import ExperienceDetailTemplate from "@/components/template/experience/detail/ExperienceDetailTemplate";
-import { Experiences } from "@/config/experience";
+import { ExperienceDetail } from "@/widgets/experience-detail";
+import { Experiences } from "@/shared/config/experience";
 
-interface ExperienceDetailPageProps {
+interface ExperienceDetailProps {
   params: {
-    expId: string;
+    id: string;
   };
 }
 
 export default function ExperienceDetailPage({
   params,
-}: ExperienceDetailPageProps) {
-  const exp = Experiences.find((val) => val.id === params.expId);
+}: ExperienceDetailProps) {
+  const exp = Experiences.find((val) => val.id === params.id);
   if (!exp) {
     redirect("/experience");
   }
-  return <ExperienceDetailTemplate exp={exp} />;
+  return <ExperienceDetail exp={exp} />;
 }

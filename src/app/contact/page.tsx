@@ -1,6 +1,6 @@
 import React from "react";
-import ContactTemplate from "@/components/template/contact/ContactTemplate";
+import { ContactSection } from "@/widgets/contact-section";
 
-export default function ContactPage() {
-  return <ContactTemplate />;
+export default function Contact() {
+  return <ContactSection />;
 }

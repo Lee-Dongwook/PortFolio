@@ -1,6 +1,14 @@
 import React from "react";
-import AboutTemplate from "@/components/template/about/AboutTemplate";
+import { AboutProfile } from "@/widgets/about-profile";
+import { FeaturedSkills } from "@/widgets/featured-skills";
+import { FeaturedExperience } from "@/widgets/featured-experience";
 
-export default function AboutPage() {
-  return <AboutTemplate />;
+export default function About() {
+  return (
+    <>
+      <AboutProfile />
+      <FeaturedSkills />
+      <FeaturedExperience />
+    </>
+  );
 }
