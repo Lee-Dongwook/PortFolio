@@ -8,6 +8,7 @@ import "../globals.css";
 import { ThemeProvider } from "@/shared/providers/theme-provider";
 import { Toaster } from "@/shared/ui/toaster";
 import { ModalProvider } from "@/shared/providers/modal-provider";
+import { ChatBubble } from "@/widgets/chat-bubble";
 import { cn } from "@/shared/lib/utils";
 
 const fontSans = FontSans({
@@ -54,6 +55,7 @@ export default async function LocaleLayout({ children, params }: Props) {
             {children}
             <Toaster />
             <ModalProvider />
+            <ChatBubble />
           </ThemeProvider>
         </NextIntlClientProvider>
       </body>

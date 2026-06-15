@@ -22,6 +22,7 @@ import {
   Loader2,
   LucideProps,
   Menu,
+  MessageCircle,
   Moon,
   MoreVertical,
   Network,
@@ -139,6 +140,7 @@ export const Icons = {
   calendar: Calendar,
   folder: Folder,
   code: Code,
+  chat: MessageCircle,
   gitHub: ({ ...props }: LucideProps) => (
     <svg
       aria-hidden="true"
