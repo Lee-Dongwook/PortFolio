@@ -26,7 +26,7 @@ export interface ExperienceInterface {
   githubLink?: string;
   techStack: ValidSkills[];
   startDate: Date;
-  endDate: Date | number;
+  endDate?: Date;
   companyLogoImg?: any;
   descriptionDetails: DescriptionDetailsInterface;
   pagesInfoArray: PagesInfoInterface[];
@@ -51,7 +51,6 @@ export const Experiences: ExperienceInterface[] = [
       "StoryBook",
     ],
     startDate: new Date("2024-10-07"),
-    endDate: Date.now(),
     companyLogoImg: "",
     pagesInfoArray: [],
     descriptionDetails: {

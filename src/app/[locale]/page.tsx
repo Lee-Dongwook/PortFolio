@@ -191,7 +191,7 @@ export default function Home() {
         <CardContent>
           <div className="space-y-4">
             {Experiences.map((exp, index) => {
-              const isOngoing = exp.endDate === Date.now();
+              const isOngoing = !exp.endDate;
               return (
                 <div key={exp.id} className="relative flex gap-4">
                   {/* Timeline indicator */}
@@ -222,12 +222,12 @@ export default function Home() {
                             month: "short",
                           })}{" "}
                           -{" "}
-                          {isOngoing
-                            ? "Present"
-                            : new Date(exp.endDate).toLocaleDateString(
-                                "en-US",
-                                { year: "numeric", month: "short" }
-                              )}
+                          {exp.endDate
+                            ? exp.endDate.toLocaleDateString("en-US", {
+                                year: "numeric",
+                                month: "short",
+                              })
+                            : "Present"}
                         </p>
                         {isOngoing && (
                           <span className="inline-flex items-center rounded-full bg-green-50 px-2 py-1 text-xs font-medium text-green-700 ring-1 ring-inset ring-green-600/20 dark:bg-green-500/10 dark:text-green-400 dark:ring-green-500/20">

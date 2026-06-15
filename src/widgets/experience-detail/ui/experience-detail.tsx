@@ -1,7 +1,5 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
-import React from "react";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -12,9 +10,10 @@ import ChipContainer from "@/shared/ui/chip-container";
 import CustomTooltip from "@/shared/ui/custom-tooltip";
 import { siteConfig } from "@/shared/config/site";
 import { cn, formatDateFromObj } from "@/shared/lib/utils";
+import type { ExperienceInterface } from "@/shared/config/experience";
 
 interface ExperienceDetailProps {
-  exp: any;
+  exp: ExperienceInterface;
 }
 
 export const ExperienceDetail = ({ exp }: ExperienceDetailProps) => {
@@ -31,7 +30,7 @@ export const ExperienceDetail = ({ exp }: ExperienceDetailProps) => {
         All Experience
       </Link>
       <div>
-        <time dateTime={Date.now().toString()}>
+        <time dateTime={exp.startDate.toISOString()}>
           {formatDateFromObj(exp.startDate)}
         </time>
         <h1 className="flex items-center justify-between mt-2 font-heading text-4xl leading-tight lg:text-5xl">
@@ -105,60 +104,27 @@ export const ExperienceDetail = ({ exp }: ExperienceDetailProps) => {
         <h2 className="inline-block font-heading text-3xl leading-tight lg:text-3xl mb-5">
           Page Info
         </h2>
-        {exp.pagesInfoArr.map(
-          (
-            page: {
-              title:
-                | string
-                | number
-                | bigint
-                | boolean
-                | React.ReactElement<
-                    any,
-                    string | React.JSXElementConstructor<any>
-                  >
-                | Iterable<React.ReactNode>
-                | React.ReactPortal
-                | null
-                | undefined;
-              description:
-                | string
-                | number
-                | bigint
-                | boolean
-                | React.ReactElement<
-                    any,
-                    string | React.JSXElementConstructor<any>
-                  >
-                | Iterable<React.ReactNode>
-                | React.ReactPortal
-                | null
-                | undefined;
-              imgArr: any[];
-            },
-            ind: React.Key | null | undefined,
-          ) => (
-            <div key={ind}>
-              <h3 className="flex items-center font-heading text-xl leading-tight lg:text-xl mt-3">
-                <Icons.star className="h-5 w-5 mr-2" /> {page.title}
-              </h3>
-              <div>
-                <p>{page.description}</p>
-                {page.imgArr.map((img, ind) => (
-                  <Image
-                    src={img}
-                    key={ind}
-                    alt={img}
-                    width={720}
-                    height={405}
-                    className="my-4 rounded-md border bg-muted transition-colors"
-                    priority
-                  />
-                ))}
-              </div>
+        {exp.pagesInfoArray.map((page, ind) => (
+          <div key={ind}>
+            <h3 className="flex items-center font-heading text-xl leading-tight lg:text-xl mt-3">
+              <Icons.star className="h-5 w-5 mr-2" /> {page.title}
+            </h3>
+            <div>
+              <p>{page.description}</p>
+              {page.imageArray.map((img, imgInd) => (
+                <Image
+                  src={img}
+                  key={imgInd}
+                  alt={img}
+                  width={720}
+                  height={405}
+                  className="my-4 rounded-md border bg-muted transition-colors"
+                  priority
+                />
+              ))}
             </div>
-          ),
-        )}
+          </div>
+        ))}
       </div>
 
       <hr className="mt-12" />

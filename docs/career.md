@@ -12,7 +12,7 @@
 | §1 커리어 타임라인 — 추가 회사 | [ ] | career.md 본문에 추가 회사 블록 미작성. EXEM 의도적으로 제외(SoT에 없음). |
 | §2 프로젝트 (Conflow 등) | [ ] | entities/config 슬라이스 미신설. CLAUDE.md 4개 프로젝트 중 career.md 본문에는 Conflow만 작성됨. |
 | §3 AI Native 역량 디테일 | [ ] | playground / chat 스크립트 데이터 아직 미생성 (`content/chat/*` 부재). |
-| §4 기술 스택 (rating) | [x] | `src/shared/config/skills.ts` 재작성 — career.md §3 키워드 기반 13종(TS / React / Next.js / LangGraph / Tailwind / Zustand / TanStack Query / A2UI / SSE / Python / LangChain / Playwright / Storybook). rating 은 보수 등급(prod=4 / hands-on=3, 5점 회피). Hero topSkills(0,4) = TS·React·Next·LangGraph 로 AI Native 정체성 anchor. UI(skills-card, page.tsx) 무수정. `entities/skills/` 는 dead code 잔존(FSD 정렬 청크에서 처리). 아이콘은 `src/shared/ui/icons.tsx` 에 lucide(Network/Workflow/Layers/Radio/Database) + Si(Python/Reactquery/Storybook) 추가. SiPlaywright 미존재로 lucide Code 폴백. |
+| §4 기술 스택 (rating) | [x] | `src/shared/config/skills.ts` 재작성 — career.md §3 키워드 기반 13종(TS / React / Next.js / LangGraph / Tailwind / Zustand / TanStack Query / A2UI / SSE / Python / LangChain / Playwright / Storybook). rating 은 보수 등급(prod=4 / hands-on=3, 5점 회피). Hero topSkills(0,4) = TS·React·Next·LangGraph 로 AI Native 정체성 anchor. UI(skills-card, page.tsx) 무수정. `entities/skills/` dead 트리 삭제. 아이콘은 `src/shared/ui/icons.tsx` 에 lucide(Network/Workflow/Layers/Radio/Database) + Si(Python/Reactquery/Storybook) 추가. SiPlaywright 미존재로 lucide Code 폴백. |
 | §5 학력 / 자격증 | [ ] | about/contact 노출 위치 미정. |
 | §6 엔지니어링 철학 | [ ] | about 위젯 / 신규 섹션 미구현. |
 | §7 채용 / 협업 컨택 | [ ] | `/[locale]/contact` 또는 `/pricing` 연결 미진행. |
@@ -22,7 +22,7 @@
 
 - `src/entities/experience/` 트리(미사용 중복 데이터·UI) 삭제 — `shared/config/experience.ts` + `shared/ui/project-card.tsx` + `shared/ui/experience-description.tsx` 가 active SoT.
 - 알려진 FSD 위반: 위 active 트리가 도메인 데이터·엔티티 UI를 `shared/` 레이어에 두고 있음. 정렬 시 위젯 3개(`experience-section`, `experience-detail`, `featured-experience`) + 페이지 2개의 import 경로 변경 필요. 별도 청크로 분리.
-- 알려진 코드 위반: `src/widgets/experience-section/ui/experience-section.tsx` 에 `let experienceArray = Experiences;` 존재 — CLAUDE.md §4-3 (`let` 금지) 위반. 정리 시 같이 처리 권장.
+- ~~알려진 코드 위반: `src/widgets/experience-section/ui/experience-section.tsx` 의 `let experienceArray`~~ → 삼항 단일 const 로 전환 완료 (CLAUDE.md §4-3 준수).
 
 ### 다음 후보 (가벼운 청크 순)
 

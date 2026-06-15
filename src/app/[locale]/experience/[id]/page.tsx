@@ -1,18 +1,16 @@
-import React from "react";
 import { redirect } from "next/navigation";
 import { ExperienceDetail } from "@/widgets/experience-detail";
 import { Experiences } from "@/shared/config/experience";
 
 interface ExperienceDetailProps {
-  params: {
-    id: string;
-  };
+  params: Promise<{ id: string }>;
 }
 
-export default function ExperienceDetailPage({
+export default async function ExperienceDetailPage({
   params,
 }: ExperienceDetailProps) {
-  const exp = Experiences.find((val) => val.id === params.id);
+  const { id } = await params;
+  const exp = Experiences.find((val) => val.id === id);
   if (!exp) {
     redirect("/experience");
   }

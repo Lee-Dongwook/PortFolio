@@ -5,16 +5,12 @@ import { Experiences } from "@/shared/config/experience";
 import { pagesConfig } from "@/shared/config/pages";
 
 const renderContent = (tabValue: string) => {
-  let experienceArray = Experiences;
-  if (tabValue === "personal") {
-    experienceArray = experienceArray.filter(
-      (value) => value.type === "Personal Project"
-    );
-  } else if (tabValue === "professional") {
-    experienceArray = experienceArray.filter(
-      (value) => value.type === "Professional"
-    );
-  }
+  const experienceArray =
+    tabValue === "personal"
+      ? Experiences.filter((value) => value.type === "Personal Project")
+      : tabValue === "professional"
+        ? Experiences.filter((value) => value.type === "Professional")
+        : Experiences;
 
   return (
     <div className="mx-auto my-4 grid justify-center gap-4 sm:grid-cols-2 lg:grid-cols-3 static">
