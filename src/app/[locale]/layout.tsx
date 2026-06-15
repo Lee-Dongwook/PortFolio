@@ -18,6 +18,9 @@ const fontSans = FontSans({
 export const metadata: Metadata = {
   title: "Lee DongWook — AI Native Frontend Engineer",
   description: "Interactive portfolio of an AI Native frontend engineer.",
+  verification: {
+    google: "j2jClVd7GFGZBMkkdF3uBsek9jyozAH1cCRwXkZB13s",
+  },
 };
 
 export function generateStaticParams() {
