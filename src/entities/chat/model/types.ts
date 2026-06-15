@@ -11,6 +11,6 @@ export interface ChatNode {
 
 export type ChatScript = Record<string, ChatNode>;
 
-export interface ChatHistoryEntry {
-  nodeId: string;
-}
+export type ChatHistoryEntry =
+  | { kind: "bot"; nodeId: string }
+  | { kind: "visitor"; text: string };

@@ -1,30 +1,41 @@
-import type { ChatScript } from "@/entities/chat/model/types";
+import type { ChatChip, ChatScript } from "@/entities/chat/model/types";
 
 const PLACEHOLDER = "테스트 내용입니다.";
 
-const branchChips = [{ label: "처음으로", next: "entry" }];
+const quickReplyChips: ChatChip[] = [
+  { label: "Conflow", next: "conflow" },
+  { label: "FutureWorkLab", next: "futureworklab" },
+  { label: "AI Native", next: "ai-native" },
+  { label: "채용 / 이직", next: "availability" },
+  { label: "학력 / 자격증", next: "credentials" },
+];
 
 export const script: ChatScript = {
   entry: {
     id: "entry",
     text: PLACEHOLDER,
-    chips: [
-      { label: "Conflow가 뭐야?", next: "conflow" },
-      { label: "FutureWorkLab 경력", next: "futureworklab" },
-      { label: "AI Native 역량", next: "ai-native" },
-      { label: "채용 / 이직 오픈?", next: "availability" },
-      { label: "학력 / 자격증", next: "credentials" },
-    ],
+    chips: quickReplyChips,
   },
-  conflow: { id: "conflow", text: PLACEHOLDER, chips: branchChips },
+  conflow: { id: "conflow", text: PLACEHOLDER, chips: quickReplyChips },
   futureworklab: {
     id: "futureworklab",
     text: PLACEHOLDER,
-    chips: branchChips,
+    chips: quickReplyChips,
   },
-  "ai-native": { id: "ai-native", text: PLACEHOLDER, chips: branchChips },
-  availability: { id: "availability", text: PLACEHOLDER, chips: branchChips },
-  credentials: { id: "credentials", text: PLACEHOLDER, chips: branchChips },
+  "ai-native": { id: "ai-native", text: PLACEHOLDER, chips: quickReplyChips },
+  availability: {
+    id: "availability",
+    text: PLACEHOLDER,
+    chips: quickReplyChips,
+  },
+  credentials: {
+    id: "credentials",
+    text: PLACEHOLDER,
+    chips: quickReplyChips,
+  },
+  fallback: { id: "fallback", text: PLACEHOLDER, chips: quickReplyChips },
 };
 
 export const ENTRY_NODE_ID = "entry";
+export const FALLBACK_NODE_ID = "fallback";
+export const BOT_REPLY_DELAY_MS = 600;
