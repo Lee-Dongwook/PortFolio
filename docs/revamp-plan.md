@@ -6,6 +6,25 @@
 
 ---
 
+## 0. 의사결정 잠금 (2026-06-15)
+
+§8 Open Questions에 대한 1차 결정. 본 결정에 따라 §5 채팅 옵션, §6 로드맵, §2 라우트 구조가 갱신됨.
+
+| # | 항목 | 결정 | 비고 |
+|---|---|---|---|
+| 1 | LLM 연동 | **보류 — 스크립트 기반(S1) 우선 구축** | 트래픽 발생 시 S3 하이브리드로 업그레이드. 응답 구조/스토어 설계는 LLM 전환을 고려해 추상화. |
+| 2 | velog 캐노니컬 | **결정 보류** — 전 글 마이그레이션 선행 후 velog 폐쇄 방향이 유력 | 마이그레이션 단계에서는 `original_url` frontmatter만 기록, canonical 메타태그는 미설정 |
+| 3 | 채팅 페르소나 | **1인칭** ("저는 ~입니다") | 환각 리스크는 스크립트 기반이라 0. 추후 LLM 전환 시 시스템 프롬프트에 1인칭 강제 |
+| 4 | Playground 실제성 | **mock 재생 우선** | LangGraph 연결은 후순위. 백엔드 비용 미발생 |
+| 5 | 다국어 | **ko/en 필수** | 해외 타겟 포함. 라우트 구조를 `/[locale]/...` 로 설계 — 컨텐츠 누적 전 셋업 권장 |
+
+이 결정의 구조적 파급:
+- **i18n이 라우트의 1차 segment** 가 되므로 §2-1의 모든 route는 `/[locale]/*` 하위로 이동.
+- **MDX frontmatter에 locale 필드** 필요. 동일 글의 ko/en 분리 관리 vs 단일 글 + lazy translation 결정 필요(§8에 신규 OQ로 추가).
+- 채팅 모듈은 §5-1의 **S1(스크립트)을 MVP로 확정**, S3는 Phase 2의 조건부 업그레이드로 강등.
+
+---
+
 ## 1. 포지셔닝 & 제품 컨셉
 
 ### 1-1. "나를 SaaS로 본다면" — 카테고리 후보
@@ -152,11 +171,25 @@ shared/               ← UI primitives (Button, Card, MarkdownRenderer), lib (m
 | **S2. Full LLM (OpenAI/Anthropic API)** | 자유 입력 → API 직접 호출. 시스템 프롬프트 + RAG | $5~$50 (트래픽 의존) | 高 | 中 (프롬프트로 완화) | 中 |
 | **S3. 하이브리드 (추천)** | 진입 시 추천 칩 = 사전 정의 응답 (즉시/무료), 자유 입력 시에만 LLM 호출 + RAG | $1~$15 | 高 | 低 | 中 |
 
-**권고:** **S3 (하이브리드).** 근거:
-1. 방문자 70%+ 는 추천 칩에서 끝남 → API 비용 80%+ 절감.
-2. 자유 입력 시에만 LLM이 동작하므로 진성 관심 방문자에게만 LLM 품질을 제공.
-3. 환각 방지를 위해 **RAG 컨텍스트(이력서 + 블로그 글 인덱스 + 프로젝트 README)** 강제 주입 + 시스템 프롬프트에 "주어진 컨텍스트 밖의 질문에는 '잘 모르겠습니다, 직접 이메일로 문의 주세요'로 답변" 명시.
-4. `llms.txt` / `llms_ctx.txt` 표준 같이 채택하면 외부 LLM에서도 본인 프로필을 쿼리 가능 — 부가 효과.
+**MVP 확정안 (§0 결정 반영): S1 스크립트 기반.** 근거:
+1. 현 단계 트래픽 미검증 → LLM 비용 정당화 불가.
+2. 응답 구조/스토어를 LLM 전환 가능하게 설계해두면 추후 S3 업그레이드 시 UI/스토어 재작성 불필요.
+3. 환각 리스크 0 → 1인칭 페르소나(§0 결정 3)를 안전하게 운용 가능.
+
+**전환 트리거 (Phase 2 진입 조건):** 월 순방문자 N명 이상 + 채팅 모듈 진입률 25% 초과 시 S3 하이브리드로 업그레이드. N 임계값은 운영 1개월 후 결정.
+
+**스크립트 데이터 모델 권장:**
+```ts
+type ChatNode = {
+  id: string;
+  speaker: 'me'; // 1인칭 고정
+  text: string;         // MD 허용
+  chips?: { label: string; next: string }[];   // 다음 노드 분기
+  attachments?: Card[]; // Server-Driven UI 블록 (프로젝트 카드/링크)
+  locale: 'ko' | 'en';  // §0 결정 5
+};
+```
+노드는 `content/chat/{locale}/*.json` 또는 MDX-with-frontmatter로 관리. LLM 전환 시 동일 `ChatNode` 응답을 서버가 동적으로 생성하는 형태로 자연 확장.
 
 ### 5-2. 기술 구현 가이드
 
@@ -196,10 +229,10 @@ shared/               ← UI primitives (Button, Card, MarkdownRenderer), lib (m
 
 | Phase | 기간 (상대 추정) | 목표 | 산출물 |
 |---|---|---|---|
-| **Phase 0. 정리** | 3~5일 | 현 FSD 구조 점검, 디자인 토큰 정리, MDX 파이프라인 셋업 | Tailwind v4 토큰, `@next/mdx` 설정, ESLint `no-let` 룰 추가 |
-| **Phase 1. MVP (Must)** | 2~3주 | 랜딩 + 채팅 (S1 스크립트) + Changelog(블로그 이관) 공개 | `/`, `/chat`(스크립트형), `/changelog`, persona router |
-| **Phase 2. AI 통합 (Should)** | 2~3주 | 채팅을 S3 하이브리드로 업그레이드, Playground 시각화 추가 | `/api/chat` (LLM + RAG), `/playground` (mock 시나리오), llms.txt 발행 |
-| **Phase 3. 차별화 (Could)** | 2~4주 | Live Status, Pricing 농담 페이지, A/B 테스트, 분석 대시보드 | `/status`, `/pricing`, PostHog 연동, 페르소나별 클릭률 리포트 |
+| **Phase 0. 정리** | 3~5일 | 현 FSD 구조 점검, **i18n 라우트 셋업(next-intl)**, 디자인 토큰 정리, MDX 파이프라인 셋업 | `/[locale]/*` 라우트, Tailwind v4 토큰, `@next/mdx` 설정, ESLint `no-let` 룰 추가 |
+| **Phase 1. MVP (Must)** | 2~3주 | 랜딩 + 채팅(S1 스크립트, 1인칭) + Changelog(velog 이관) 공개 | `/[locale]/`, `/[locale]/chat`(스크립트형), `/[locale]/changelog`, persona router |
+| **Phase 2. 시각화 & 조건부 AI (Should)** | 2~3주 | Playground mock 재생 시각화, 트래픽 조건 충족 시에만 채팅 S3 하이브리드 업그레이드 | `/[locale]/playground` (mock), (조건부) `/api/chat` LLM + RAG, llms.txt |
+| **Phase 3. 차별화 (Could)** | 2~4주 | Live Status, Pricing 농담 페이지, 분석 대시보드, (선택) LangGraph 실연결 | `/[locale]/status`, `/[locale]/pricing`, PostHog 연동, 페르소나별 funnel |
 
 각 Phase 종료 시 **체크포인트**: KPI 측정 → 다음 Phase 진입 여부 결정.
 
@@ -224,17 +257,24 @@ shared/               ← UI primitives (Button, Card, MarkdownRenderer), lib (m
 
 ## 8. 열린 의사결정 사항 (Open Questions)
 
-답이 정해져야 다음 단계가 잠금해제되는 질문들. 우선순위 순.
+답이 정해져야 다음 단계가 잠금해제되는 질문들. **§0에서 1·3·4·5 결정됨**, 2는 보류.
 
-1. **[비용] 채팅 모듈에 실제 LLM 비용을 월 얼마까지 감당할 의향이 있는가?** ($0 / $10 이하 / $50 이하) — Phase 2 진입 조건.
-2. **[모델 선택] OpenAI / Anthropic / Google 중 어느 SDK를 메인으로 쓸 것인가?** — 본인이 가장 능숙한 것 + 무료 크레딧 잔여량으로 결정 권장.
-3. **[velog 캐노니컬]** 기존 velog 글의 SEO를 살릴지(rel=canonical을 velog로) vs 본 사이트가 정본이 되도록(velog 글 비공개 또는 본 사이트로 canonical) — **둘 다 살리기는 SEO 패널티 위험.**
-4. **[채팅 페르소나] "1인칭(저는 OO입니다)" vs "3인칭(OO은 ~한 엔지니어입니다)"** 어느 톤? — 1인칭이 몰입 ↑이나 환각 시 신뢰도 손상 큼.
-5. **[Pricing 페이지의 톤]** 진짜 가격 공개 vs 농담조 패키지(BYOC, Hire-by-the-hour) vs 아예 생략 — 채용 담당자에게는 위트가 마이너스일 수도.
-6. **[Playground의 실제성]** Multi-Agent Visualizer를 mock 시나리오 재생으로 둘 것인가, 실제 LangGraph 백엔드까지 붙일 것인가? — 후자는 별도 백엔드 배포(Railway/Fly.io) 필요.
-7. **[Analytics]** PostHog (self-host 가능, 무료 한도 큼) vs Vercel Analytics (간단, 한도 작음) vs Plausible — 페르소나별 funnel 추적 깊이가 필요하면 PostHog.
-8. **[ko/en 다국어]** 영어 버전 제공 여부 — 글로벌 채용 타겟이면 필수, 국내 한정이면 후순위.
-9. **[디자인 시스템]** 기존 Radix UI 위에 자체 토큰만 얹을지, shadcn/ui 도입해서 속도 우선할지.
+### 결정 완료
+- ~~1. LLM 비용~~ → **보류, S1 우선** (§0)
+- ~~3. 채팅 페르소나~~ → **1인칭** (§0)
+- ~~4. Playground 실제성~~ → **mock 우선** (§0)
+- ~~5. 다국어~~ → **ko/en 필수** (§0)
+
+### 보류/미결정
+2. **[velog 캐노니컬]** 마이그레이션 완료 시점에 재논의. 현재는 `original_url` frontmatter만 기록, canonical 메타 미설정.
+6. **[모델 선택]** Phase 2 진입 시점에 결정 (현재 불필요).
+7. **[Pricing 페이지의 톤]** 진짜 가격 / 농담조 / 생략 — Phase 3에서 결정.
+8. **[Analytics]** PostHog vs Vercel Analytics vs Plausible — Phase 1 종료 시 결정.
+9. **[디자인 시스템]** Radix + 자체 토큰 vs shadcn/ui 도입 — Phase 0 종료 전 결정 필요.
+
+### 신규 추가 (§0 결정 5의 파급)
+10. **[i18n 컨텐츠 운영 모델]** 동일 글을 `*.ko.mdx` / `*.en.mdx` 분리할지 vs frontmatter에 다국어 본문 키로 묶을지 vs ko 정본 + en은 별도 번역 트리거. — 운영 부담과 번역 동기화 누락 리스크 트레이드오프.
+11. **[i18n 라이브러리]** `next-intl` vs `next-i18next` vs App Router 네이티브 `[locale]` segment + 자체 사전 — Next.js 16 App Router 호환성과 SSR 정합성이 결정 기준.
 
 ---
 

@@ -1,0 +1,12 @@
+{
+  "nav": {
+    "home": "Home",
+    "experience": "Experience",
+    "skills": "Skills",
+    "contact": "Contact"
+  },
+  "locale": {
+    "ko": "한국어",
+    "en": "English"
+  }
+}
