@@ -6,6 +6,7 @@ export type ValidSkills =
   | "HTML5"
   | "CSS3"
   | "Redux-Toolkit"
+  | "TanStack Query"
   | "Zustand"
   | "Socket.io"
   | "Tailwind CSS"
