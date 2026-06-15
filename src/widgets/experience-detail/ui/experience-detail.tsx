@@ -24,7 +24,7 @@ export const ExperienceDetail = ({ exp }: ExperienceDetailProps) => {
         href="/experience"
         className={cn(
           buttonVariants({ variant: "ghost" }),
-          "absolute left-[-200px] top-14 hidden xl:inline-flex"
+          "absolute left-[-200px] top-14 hidden xl:inline-flex",
         )}
       >
         <Icons.chevronLeft className="mr-2 h-4 w-4" />
@@ -119,7 +119,6 @@ export const ExperienceDetail = ({ exp }: ExperienceDetailProps) => {
                   >
                 | Iterable<React.ReactNode>
                 | React.ReactPortal
-                | Promise<React.AwaitedReactNode>
                 | null
                 | undefined;
               description:
@@ -133,12 +132,11 @@ export const ExperienceDetail = ({ exp }: ExperienceDetailProps) => {
                   >
                 | Iterable<React.ReactNode>
                 | React.ReactPortal
-                | Promise<React.AwaitedReactNode>
                 | null
                 | undefined;
               imgArr: any[];
             },
-            ind: React.Key | null | undefined
+            ind: React.Key | null | undefined,
           ) => (
             <div key={ind}>
               <h3 className="flex items-center font-heading text-xl leading-tight lg:text-xl mt-3">
@@ -159,7 +157,7 @@ export const ExperienceDetail = ({ exp }: ExperienceDetailProps) => {
                 ))}
               </div>
             </div>
-          )
+          ),
         )}
       </div>
 

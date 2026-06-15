@@ -1,5 +1,37 @@
 # Career Intake
 
+## 코드 반영 현황 (last update: 2026-06-15)
+
+> 다음 세션 진입 시 이 표부터 확인. 체크된 섹션은 이미 코드에 반영됨, 미체크는 SoT만 작성된 상태.
+
+| 섹션                               | 상태 | 반영 위치 / 메모                                                                                                                                                                                                                                         |
+| ---------------------------------- | ---- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| §0 메타 / Identity                 | [x]  | `src/shared/config/site.ts`, `src/shared/config/socials.ts` (commit `64c5485 feat: meta for bio`)                                                                                                                                                        |
+| §1 커리어 타임라인 — FutureWorkLab | [x]  | `src/shared/config/experience.ts` 의 `futureworklab` 엔트리 (shortDescription / techStack 8종 / paragraphs 1 / bullets 5 / websiteLink = axflow.io). 이전 EXEM 엔트리 제거. `ValidSkills` 에 `"TanStack Query"` 추가 (`src/shared/config/constants.ts`). |
+
+| §1 커리어 타임라인 — 추가 회사 | [ ] | career.md 본문에 추가 회사 블록 미작성. EXEM 의도적으로 제외(SoT에 없음). |
+| §2 프로젝트 (Conflow 등) | [ ] | entities/config 슬라이스 미신설. CLAUDE.md 4개 프로젝트 중 career.md 본문에는 Conflow만 작성됨. |
+| §3 AI Native 역량 디테일 | [ ] | playground / chat 스크립트 데이터 아직 미생성 (`content/chat/*` 부재). |
+| §4 기술 스택 (rating) | [x] | `src/shared/config/skills.ts` 재작성 — career.md §3 키워드 기반 13종(TS / React / Next.js / LangGraph / Tailwind / Zustand / TanStack Query / A2UI / SSE / Python / LangChain / Playwright / Storybook). rating 은 보수 등급(prod=4 / hands-on=3, 5점 회피). Hero topSkills(0,4) = TS·React·Next·LangGraph 로 AI Native 정체성 anchor. UI(skills-card, page.tsx) 무수정. `entities/skills/` 는 dead code 잔존(FSD 정렬 청크에서 처리). 아이콘은 `src/shared/ui/icons.tsx` 에 lucide(Network/Workflow/Layers/Radio/Database) + Si(Python/Reactquery/Storybook) 추가. SiPlaywright 미존재로 lucide Code 폴백. |
+| §5 학력 / 자격증 | [ ] | about/contact 노출 위치 미정. |
+| §6 엔지니어링 철학 | [ ] | about 위젯 / 신규 섹션 미구현. |
+| §7 채용 / 협업 컨택 | [ ] | `/[locale]/contact` 또는 `/pricing` 연결 미진행. |
+| §8 자유 메모 | [-] | 본인 보류. |
+
+### 부수 정리
+
+- `src/entities/experience/` 트리(미사용 중복 데이터·UI) 삭제 — `shared/config/experience.ts` + `shared/ui/project-card.tsx` + `shared/ui/experience-description.tsx` 가 active SoT.
+- 알려진 FSD 위반: 위 active 트리가 도메인 데이터·엔티티 UI를 `shared/` 레이어에 두고 있음. 정렬 시 위젯 3개(`experience-section`, `experience-detail`, `featured-experience`) + 페이지 2개의 import 경로 변경 필요. 별도 청크로 분리.
+- 알려진 코드 위반: `src/widgets/experience-section/ui/experience-section.tsx` 에 `let experienceArray = Experiences;` 존재 — CLAUDE.md §4-3 (`let` 금지) 위반. 정리 시 같이 처리 권장.
+
+### 다음 후보 (가벼운 청크 순)
+
+1. websiteLink 정책 확정 (axflow.io 유지 vs 회사 URL 복귀 + product URL은 bullets로 이전).
+2. Projects 엔티티 신설 (Conflow 우선).
+3. FSD 정렬 리팩터(experience 도메인을 `entities/experience` 로 환원, skills dead 트리 동반 정리, `let` 위반 처리).
+
+---
+
 > 이 문서는 포트폴리오 개편 시 **갱신 소스(SoT)** 가 됩니다. 여기 적힌 내용이 `src/shared/config/{experience,skills,...}.ts`, 채팅 스크립트 노드(`content/chat/*`), 그리고 `/[locale]/experience` · `/[locale]/changelog` 등으로 흘러갑니다.
 >
 > 작성 가이드:
