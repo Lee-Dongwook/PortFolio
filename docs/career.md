@@ -1,6 +1,6 @@
 # Career Intake
 
-## 코드 반영 현황 (last update: 2026-06-15)
+## 코드 반영 현황 (last update: 2026-06-15 / projects 추가 2026-06-15)
 
 > 다음 세션 진입 시 이 표부터 확인. 체크된 섹션은 이미 코드에 반영됨, 미체크는 SoT만 작성된 상태.
 
@@ -10,12 +10,12 @@
 | §1 커리어 타임라인 — FutureWorkLab | [x]  | `src/shared/config/experience.ts` 의 `futureworklab` 엔트리 (shortDescription / techStack 8종 / paragraphs 1 / bullets 5 / websiteLink = axflow.io). 이전 EXEM 엔트리 제거. `ValidSkills` 에 `"TanStack Query"` 추가 (`src/shared/config/constants.ts`). |
 
 | §1 커리어 타임라인 — 추가 회사 | [ ] | career.md 본문에 추가 회사 블록 미작성. EXEM 의도적으로 제외(SoT에 없음). |
-| §2 프로젝트 (Conflow 등) | [ ] | entities/config 슬라이스 미신설. CLAUDE.md 4개 프로젝트 중 career.md 본문에는 Conflow만 작성됨. |
+| §2 프로젝트 (Conflow 등) | [x] | `entities/project/{model,config,ui}` 신설 (Conflow 1건 SoT 반영). `widgets/projects-section` · `widgets/project-detail` 신규. 라우트 `/[locale]/projects`, `/[locale]/projects/[id]` 추가. `routesConfig.mainNav` 에 `Projects` 삽입. `ValidPages` + `pagesConfig.projects` 확장. 처음부터 `entities/` 슬라이스로 정착 — experience 도메인 FSD 위반과 달리 정합. CLAUDE.md 4개 프로젝트 중 Interactive Portfolio / zIndexScan / LinkBrain 은 SoT 비어있어 미노출. |
 | §3 AI Native 역량 디테일 | [ ] | playground / chat 스크립트 데이터 아직 미생성 (`content/chat/*` 부재). |
 | §4 기술 스택 (rating) | [x] | `src/shared/config/skills.ts` 재작성 — career.md §3 키워드 기반 13종(TS / React / Next.js / LangGraph / Tailwind / Zustand / TanStack Query / A2UI / SSE / Python / LangChain / Playwright / Storybook). rating 은 보수 등급(prod=4 / hands-on=3, 5점 회피). Hero topSkills(0,4) = TS·React·Next·LangGraph 로 AI Native 정체성 anchor. UI(skills-card, page.tsx) 무수정. `entities/skills/` dead 트리 삭제. 아이콘은 `src/shared/ui/icons.tsx` 에 lucide(Network/Workflow/Layers/Radio/Database) + Si(Python/Reactquery/Storybook) 추가. SiPlaywright 미존재로 lucide Code 폴백. |
 | §5 학력 / 자격증 | [ ] | about/contact 노출 위치 미정. |
-| §6 엔지니어링 철학 | [ ] | about 위젯 / 신규 섹션 미구현. |
-| §7 채용 / 협업 컨택 | [ ] | `/[locale]/contact` 또는 `/pricing` 연결 미진행. |
+| §6 엔지니어링 철학 | [x] | `entities/philosophy/{model,config}` 신설 (원칙 3·동료상 2·향후 모습 1, 부정 톤 항목 일체 제외). `widgets/engineering-philosophy` + `/[locale]/about` 라우트 추가. `routesConfig.mainNav` 에 `About` 삽입. `pagesConfig.about` 의미를 'Home' → 'Engineering Philosophy' 로 재정의(미사용 키였음). |
+| §7 채용 / 협업 컨택 | [x] | `entities/availability/{model,config}` 신설 (status=open, full-time, Seoul/Remote/Intl Remote, Any size, Cloud Monitoring·Manufacturing AX, KST 09–20, Email·LinkedIn·Form). `widgets/contact-availability` 신규 — `widgets/contact-section` 안 form 위에 카드 1개로 삽입. 별도 라우트 추가 없음. Pricing 페이지는 Phase 3 까지 보류. |
 | §8 자유 메모 | [-] | 본인 보류. |
 
 ### 부수 정리
@@ -27,8 +27,12 @@
 ### 다음 후보 (가벼운 청크 순)
 
 1. websiteLink 정책 확정 (axflow.io 유지 vs 회사 URL 복귀 + product URL은 bullets로 이전).
-2. Projects 엔티티 신설 (Conflow 우선).
-3. FSD 정렬 리팩터(experience 도메인을 `entities/experience` 로 환원, skills dead 트리 동반 정리, `let` 위반 처리).
+2. ~~Projects 엔티티 신설 (Conflow 우선).~~ → 완료 (2026-06-15).
+3. ~~§6 엔지니어링 철학 about 위젯.~~ → 완료 (2026-06-15).
+4. CLAUDE.md 4 프로젝트 SoT 보강 (Interactive Portfolio / zIndexScan / LinkBrain) — career.md §2 본문에 템플릿 복제 작성 필요.
+5. ~~§7 채용/협업 컨택 → `/[locale]/contact` 연결.~~ → 완료 (2026-06-15).
+6. §3 AI Native 채팅 스크립트 (`content/chat/{locale}/*.json` + ChatNode 타입, revamp-plan S1).
+7. FSD 정렬 리팩터(experience 도메인을 `entities/experience` 로 환원, skills dead 트리 동반 정리, `let` 위반 처리).
 
 ---
 
@@ -250,11 +254,6 @@ Testing:
 1. 비즈니스 가치와 기술의 정렬: 기술은 그 자체로 목적이 될 수 없다. 모든 아키텍처 개선과 신기술 도입은 제품의 출시 속도(Time-to-Market)를 앞당기거나 운영 비용을 절감하는 등 회사의 비즈니스 지표에 기여해야 한다.
 2. 부수 효과(Side Effect) 제어를 통한 유지보수 비용 최소화: 코드 내 불변성(Immutability)을 엄격히 통제하고 FSD 구조로 도메인 경계를 나누는 이유는, 제품 스케일업 시 기능 추가 및 디버깅에 소모되는 개발 공수(Opportunity Cost)를 줄이기 위함이다.
 3. 데이터 기반의 인과관계 증명: 성능 개선이든 구조 변경이든, 모든 의사결정은 감정이 아닌 성능 프로파일러와 지표로 증명하여 자원의 낭비를 막는다.
-
-싫어하는 코드/아키텍처 패턴 (1~3가지, 이유와 함께):
-
-- 비즈니스 요구사항과 격리된 오버 엔지니어링: 현재 제품의 단계와 유저 규모를 고려하지 않고 오직 엔지니어의 기술적 만족감만을 위해 아키텍처를 복잡하게 설계하여 생산성을 떨어뜨리는 행위.
-- 무분별한 상태 변경과 응집도 낮은 모노리스 컴포넌트: 기획 변경에 유연하게 대처하지 못해 비즈니스 피벗이나 신기능 추가의 발목을 잡기 때문.
 
 같이 일하고 싶은 동료의 특성 (1~3가지):
 

@@ -13,11 +13,13 @@ type PagesConfig = {
 
 export const pagesConfig: PagesConfig = {
   about: {
-    title: "Home",
-    description: "Welcome to my portfolio website.",
+    title: "Engineering Philosophy",
+    description:
+      "내가 코드와 아키텍처를 어떤 원칙으로 다루는지, 그리고 어디로 향하고 있는지에 대한 기록.",
     metadata: {
-      title: "Home",
-      description: "Lee DongWook's portfolio website.",
+      title: "About",
+      description:
+        "Lee DongWook의 엔지니어링 원칙, 이상적인 동료상, 그리고 AI Native 솔루션 아키텍트로서의 향후 방향성.",
     },
   },
   skills: {
